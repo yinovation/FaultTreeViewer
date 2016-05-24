@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+	<head>
+	
+		<title>08240 ACW 2014/15</title>
+
+		<script type="text/javascript" src="javascript/canvas.js"></script>
+		<script type="text/javascript" src="javascript/vector.js"></script>
+		<script type="text/javascript" src="javascript/grid.js"></script>
+		
+		<script type="text/javascript" src="javascript/extends.js"></script>
+		<script type="text/javascript" src="javascript/faultTreeNode.js"></script>
+		<script type="text/javascript" src="javascript/FaultTreeGate.js"></script>
+		<script type="text/javascript" src="javascript/andGate.js"></script>
+		<script type="text/javascript" src="javascript/OrGate.js"></script>
+		<script type="text/javascript" src="javascript/basicEvent.js"></script>
+		<script type="text/javascript" src="javascript/transferGate.js"></script>
+		<script type="text/javascript" src="javascript/exampleFaultTrees.js"></script>
+		<script type="text/javascript" src="javascript/Instructions.js"></script>
+		
+	</head>
+	<body>
+		<canvas id="canvas" width="1920" height="1080"></canvas>
+		<!--<img id="gatesandevents" src="images/gatesandevents.png" alt="gatesImg">
+		<img id="dynamicsizing" src="images/dynamicsizing.png" alt="dynamicImg">
+		<img id="minimap" src="images/minimap.png" alt="minimapImg">
+		<img id="mousewheelzoom" src="images/mousewheelzoom.png" alt="zoomImg">
+		<img id="panning" src="images/panning.png" alt="panImg">-->
+        <p>
+            Instructions:<br />
+            Switch between fault trees - 1/2/3<br />
+            Pan fault tree - Mouse click + drag<br />
+            Zoom in/out on fault tree - Mouse scroll wheel<br />
+            Scale the fault tree to canvas - F<br />
+            Toggle between 'dynamic' and 'fixed' canvas sizing - D<br />
+        </p>
+        <p>
+            Fault Tree Viewer
+            This program comes preloaded with 3 fault trees which can be alternated between by
+            pressing the 1/2/3 keys on the keyboard. The keypress functions operate using a
+            switch statement which performs different functions depending on the key you press.
+            The fault trees are composed on 4 different objects: OrGate, AndGate, BasicEvent and
+            TransferGate. These are all drawn using the pContext.moveTo/LineTo functions. The AndGate
+            uses pContext.arc to draw a semi circle arc. The OrGate is drawn completely using bezier
+            curves. BasicEvents and TransferGates are drawn using a algorithm which draws around a
+            centre point depending on the number of segments which the viewer has been programmed to
+            draw.
+        </p>
+		<img id="gatesandevents" src="images/gatesandevents.png" alt="gatesImg">
+		<p>
+        In the top right corner of the screen is the mini map, this displays a complete view
+        of each fault tree and shows you exactly where you are on the tree, which is indicated
+        by a red rectangle inside the mini map showing the current field of view.
+        The mini map is basically the fault tree being redrawn again inside the rectangle and
+        scaled down to fit inside. It uses the same panning function as the main fault tree but
+        the numbers are negated. This is because when you want to view the right hand side of the
+        tree, you are actually dragging left to move to the right of the tree. If the pan values were
+        positive, the mini map viewing rectangle would move in the opposite direction. The viewing rectangle
+        also zooms in when you do on the main tree. A separate scaling variable is used on the rectangle so
+        that it zooms in when you zoom out on the canvas and vice versa.
+		</p>
+		<img id="minimap" src="images/minimap.png" alt="minimapImg">
+		<p>
+        As mentioned with the mini map. The viewer has a zooming functionality which operates using the mouses
+        scroll wheel. Javascript has an event called wheelDelta which can be used to determine what happens when
+        you scroll the mouse wheel back or forward one increment. The zooming works by reducing the scale (scrolling
+        back) or increasing the scale (scrolling forward). There is also a boundary put in place to stop the viewer
+        from zooming too far out (below the scale of 0).
+		</p>
+		<img id="mousewheelzoom" src="images/mousewheelzoom.png" alt="zoomImg">
+		<p>
+        You can pan the fault tree on the canvas by clicking on the mouse and dragging (unaffected by scale besides going
+        slower when zoomed in by a large amount. Panning is done by making use of a vector object which has add and subtract
+        functions programmed into it. These functions allow the calculations of the panning to be applied. Whenever the canvas
+        is panned, it is basically constantly redrawing on the new coordinates it has been translated to. The canvas dynamically
+        captures the current mouse positions and the previous mouse positions using the event clientX/Y functions for finding
+        mouse positions on the canvas. The previous mouse positions is subtracted from the current mouse position to leave a value
+        which is the offset between the two positions. Whenever the canvas is panning, the pan vector is constantly calculating
+        the new positions of the fault tree.
+		</p>
+		<img id="panning" src="images/panning.png" alt="panImg">
+		<p>
+        The fault tree itself is drawn and translated using a recursive function which works out the amount of child the tree has
+        and translates it accordingly using an algorithm. This is dynamic, so despite only having 3 fault trees preloaded, any amount
+        of nodes can be added to the tree and it would calculate the precise amount of space needed and draw the lines between. The
+        recursive function will constantly loop on itself until all of the children of that tree have been found. With each increment
+        of the loop, the branch width also increases to the amount of children that parent has. The children are translated by a
+        context.translate which is based off dividing the total width, the child width and the previous child's width.
+		</p>
+		<p>
+        The program can toggle between fixed and dynamic sizing by pressing the D key. The default setting is fixed so pressing
+        D it will enable dynamic sizing. The dynamic sizing of the canvas means that the entire canvas will scale according to
+        the size of the browser window.
+		</p>
+		<img id="dynamicsizing" src="images/dynamicsizing.png" alt="dynamicImg">
+	</body>
+</html>
